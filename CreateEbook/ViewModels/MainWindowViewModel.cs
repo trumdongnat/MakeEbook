@@ -58,11 +58,12 @@ namespace CreateEbook.ViewModels
         }
 
         private string _toolPath = Settings.Default.ToolPath;
+
         public string ToolPath
         {
             get => _toolPath;
-            set 
-            { 
+            set
+            {
                 SetProperty(ref _toolPath, value);
                 Settings.Default.ToolPath = value;
                 Settings.Default.Save();
@@ -159,6 +160,16 @@ namespace CreateEbook.ViewModels
             if (!File.Exists(ToolPath))
             {
                 MessageBox.Show("Không tìm thấy kindle gen tool", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.OK);
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(Ebook.Author))
+            {
+                MessageBox.Show("Không để trống tên tác giả", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.OK);
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(Ebook.Name))
+            {
+                MessageBox.Show("Không để trống tên sách", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.OK);
                 return;
             }
             IsBusy = true;

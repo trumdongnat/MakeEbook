@@ -1,19 +1,15 @@
 ﻿using CreateEbook.Helpers;
 using CreateEbook.Models;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace CreateEbook.Services
 {
-    class ExportToc
+    internal class ExportToc
     {
         private Ebook _ebook;
         private string _folder;
-
 
         public ExportToc(Ebook ebook, string folder)
         {
@@ -26,7 +22,9 @@ namespace CreateEbook.Services
             ExportContentOpf();
             ExportTocNcx();
         }
+
         #region content.opf
+
         private void ExportContentOpf()
         {
             var content = MakeContentOpf();
@@ -57,9 +55,10 @@ namespace CreateEbook.Services
                 builder.AppendLine("    <itemref idref=\"description\"/>");
             }
             builder.AppendLine("    <itemref idref=\"mucluc\"/>");
-            for (int i = 0; i < _ebook.Chapters.Count; i++)
+
+            foreach (var chapter in _ebook.Chapters)
             {
-                builder.AppendLine($"    <itemref idref=\"C{i}\"/>");
+                builder.AppendLine($"    <itemref idref=\"C{chapter.Index}\"/>");
             }
             return builder.ToString();
         }
@@ -72,9 +71,10 @@ namespace CreateEbook.Services
                 builder.AppendLine("    <item id=\"description\" href=\"Text/Description.html\" media-type=\"application/xhtml+xml\"/>");
             }
             builder.AppendLine("    <item id=\"mucluc\" href=\"Text/mucluc.html\" media-type=\"application/xhtml+xml\"/>");
-            for (int i = 0; i < _ebook.Chapters.Count; i++)
+
+            foreach (var chapter in _ebook.Chapters)
             {
-                builder.AppendLine($"    <item id=\"C{i}\" href=\"Text/C{i}.html\" media-type=\"application/xhtml+xml\"/>");
+                builder.AppendLine($"    <item id=\"C{chapter.Index}\" href=\"Text/C{chapter.Index}.html\" media-type=\"application/xhtml+xml\"/>");
             }
             return builder.ToString();
         }
@@ -84,9 +84,11 @@ namespace CreateEbook.Services
             //TODO
             return Environment.NewLine;
         }
-        #endregion
+
+        #endregion content.opf
 
         #region toc.ncx
+
         private void ExportTocNcx()
         {
             var toc = MakeToc();
@@ -114,17 +116,17 @@ namespace CreateEbook.Services
             foreach (var chapter in _ebook.Chapters)
             {
                 builder.AppendLine($@"    <navPoint id=""nav{index}"" playorder=""{index}"">");
-                builder.AppendLine( @"       <navLabel>");
+                builder.AppendLine(@"       <navLabel>");
                 builder.AppendLine($@"          <text>{chapter.Name}</text>");
-                builder.AppendLine( @"       </navLabel>");
+                builder.AppendLine(@"       </navLabel>");
                 builder.AppendLine($@"       <content src=""Text/C{index}.html""/>");
-                builder.AppendLine( @"    </navPoint>");
+                builder.AppendLine(@"    </navPoint>");
                 index++;
             }
             text = text.Replace("[NAVPOINT]", builder.ToString());
             return text;
         }
-        #endregion
 
+        #endregion toc.ncx
     }
 }

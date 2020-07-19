@@ -25,7 +25,7 @@ namespace CreateEbook.Services
             ExportCover(ebook, dataPath);
             ExportText(ebook, textPath);
             ExportToc(ebook, dataPath);
-            //RunCommand(workspace, dataPath, ebook);
+            RunCommand(workspace, dataPath, ebook);
         }
 
         private void Prepare(Ebook ebook)
@@ -107,7 +107,7 @@ namespace CreateEbook.Services
             process.WaitForExit();
 
             //copy output
-            var fileName = $"{ebook.Name}-{ebook.Author}.mobi";
+            var fileName = $"{ebook.Name}.mobi";
             fileName = TextHelper.FixFileName(fileName);
             var filePath = Path.Combine(workspace, fileName);
             File.Move(Path.Combine(dataPath, "content.mobi"), filePath);

@@ -182,13 +182,13 @@
                 </Grid>
             </StackPanel>
         </GroupBox>
-        <!--<Border
+        <Border
             Grid.RowSpan="4"
             Panel.ZIndex="1"
             Background="White"
             Opacity="0.5"
             Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}">
             <mah:ProgressRing />
-        </Border>-->
+        </Border>
     </Grid>
 </mah:MetroWindow>
