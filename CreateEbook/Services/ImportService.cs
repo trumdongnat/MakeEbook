@@ -69,7 +69,7 @@ namespace CreateEbook.Services
                         //make new chapter
                         chapter = new Chapter() { Index = ++chapterIndex };
                         chapter.Name = line;
-                        chapter.VolName = volumn;
+                        chapter.VolumnName = volumn;
                         chapterText = new StringBuilder();
                     }
                     else

@@ -1,6 +1,7 @@
 ﻿using CreateEbook.Helpers;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Media.Imaging;
 
 namespace CreateEbook.Models
@@ -66,6 +67,70 @@ namespace CreateEbook.Models
             set => SetProperty(ref _autoSplitInterval, value);
         }
 
+        public string Charset = "UTF-8";
+        public bool HasVolumn => Volumns != null && Volumns.Count > 0;
+
+        public List<Volumn> Volumns { get; set; }
+
+        public void PrepareToExport()
+        {
+            Volumns = null;
+            if (IsAutoSplitVol)
+            {
+                SplitVolumn();
+            }
+
+            if (!string.IsNullOrWhiteSpace(Chapters[0].VolumnName))
+            {
+                Volumns = new List<Volumn>();
+                var groups = Chapters.GroupBy(x => x.VolumnName);
+                int index = 0;
+                foreach (var group in groups)
+                {
+                    index++;
+                    var volumn = new Volumn
+                    {
+                        Index = index,
+                        Name = group.Key,
+                        Chapters = group.ToList()
+                    };
+                    Volumns.Add(volumn);
+                }
+            }
+        }
+
+        private void SplitVolumn()
+        {
+            int count = 0;
+            string volumnName = null;
+            for (int i = 0; i < Chapters.Count; i++)
+            {
+                var chapter = Chapters[i];
+                if (count == 0)
+                {
+                    var start = i;
+                    var end = i + AutoSplitInterval -1;
+                    if (end < Chapters.Count - 1)
+                    {
+                        volumnName = $"Chương {Chapters[start].Index } - {Chapters[end].Index }";
+                    }
+                    else
+                    {
+                        volumnName = $"Chương {Chapters[start].Index } - {Chapters[Chapters.Count - 1].Index } (HẾT)";
+                    }
+                }
+                chapter.VolumnName = volumnName;
+                count++;
+                if (count == AutoSplitInterval)
+                {
+                    count = 0;
+                }
+            }
+           
+        }
+
+        #region IDataErrorInfo
+
         public string Error => null;
 
         public string this[string columnName]
@@ -87,6 +152,6 @@ namespace CreateEbook.Models
             }
         }
 
-        public string Charset = "UTF-8";
+        #endregion IDataErrorInfo
     }
 }

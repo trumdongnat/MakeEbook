@@ -11,7 +11,7 @@ namespace CreateEbook.Models
             set => SetProperty(ref _name, value);
         }
         private string _volName;
-        public string VolName
+        public string VolumnName
         {
             get => _volName;
             set => SetProperty(ref _volName, value);

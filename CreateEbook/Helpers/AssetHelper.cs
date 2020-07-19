@@ -16,6 +16,7 @@ namespace CreateEbook.Helpers
         public static string ContentOpfPath = Path.Combine(AssetFolder, @"content.opf");
         public static string TocNcxPath = Path.Combine(AssetFolder, @"toc.ncx");
         public static string TocHtmlPath = Path.Combine(AssetFolder, @"mucluc.html");
+        public static string VolumnHtmlPath = Path.Combine(AssetFolder, @"volumn.html");
         public static string OuputFolder = Path.Combine(AppFolder, @"Output");
     }
 }

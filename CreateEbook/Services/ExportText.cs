@@ -34,12 +34,18 @@ namespace CreateEbook.Services
             {
                 ExportDescripiton(_ebook.Description);
             }
+            if (_ebook.HasVolumn)
+            {
+                foreach (var volumn in _ebook.Volumns)
+                {
+                    ExportVolumn(volumn);
+                }
+            }
             foreach (var chapter in _ebook.Chapters)
             {
                 ExportChapter(chapter);
             }
-            ExportTOC();
-            
+            ExportIndex();
         }
 
         private void ExportDescripiton(string description)
@@ -78,20 +84,32 @@ namespace CreateEbook.Services
             File.WriteAllText(filePath, content, Encoding.UTF8);
         }
 
-        private void ExportTOC()
+        private void ExportIndex()
         {
             var template = File.ReadAllText(AssetHelper.TocHtmlPath);
             var builder = new StringBuilder();
-            if (_ebook.HasDescription)
+            //if (_ebook.HasDescription)
+            //{
+            //    var tag = $"<div class=\"lv2\"><a href = \"description.html\" >Giới thiệu</a></div>";
+            //    builder.AppendLine(tag);
+            //}
+            if (_ebook.HasVolumn)
             {
-                var tag = $"<div class=\"lv2\"><a href = \"description.html\" >Giới thiệu</a></div>";
-                builder.AppendLine(tag);
+                foreach (var volumn in _ebook.Volumns)
+                {
+                    var tag = $"<div class=\"lv2\"><a href = \"Q{volumn.Index}.html\" >{volumn.Name}</a></div>";
+                    builder.AppendLine(tag);
+                }
             }
-            foreach (var chapter in _ebook.Chapters)
+            else
             {
-                var tag = $"<div class=\"lv2\"><a href = \"C{chapter.Index}.html\" >{chapter.Name}</a></div>";
-                builder.AppendLine(tag);
+                foreach (var chapter in _ebook.Chapters)
+                {
+                    var tag = $"<div class=\"lv2\"><a href = \"C{chapter.Index}.html\" >{chapter.Name}</a></div>";
+                    builder.AppendLine(tag);
+                }
             }
+
             var text = builder.ToString();
             template = template.Replace("[TOC]", text);
             var filePath = Path.Combine(_folder, "mucluc.html");
@@ -107,7 +125,7 @@ namespace CreateEbook.Services
             {
                 var text = section.Replace(BOOK_SLOT, _ebook.Name)
                     .Replace(AUTHOR_SLOT, _ebook.Author)
-                    .Replace(VOL_SLOT, chapter.VolName)
+                    .Replace(VOL_SLOT, chapter.VolumnName)
                     .Replace(CHAPTER_SLOT, chapter.Name)
                     .Replace(ID_SLOT, $"C{chapter.Index}");
                 if (text.Contains(PARAGRAPH_SLOT))
@@ -132,6 +150,23 @@ namespace CreateEbook.Services
             Debug.WriteLine($"Export chapter {chapter.Index} to {filePath}");
             var content = builder.ToString();
             File.WriteAllText(filePath, content, Encoding.UTF8);
+        }
+
+        private void ExportVolumn(Volumn volumn)
+        {
+            var template = File.ReadAllText(AssetHelper.VolumnHtmlPath);
+            var builder = new StringBuilder();
+
+            foreach (var chapter in volumn.Chapters)
+            {
+                var tag = $"<div class=\"lv2\"><a href = \"C{chapter.Index}.html\" >{chapter.Name}</a></div>";
+                builder.AppendLine(tag);
+            }
+            var text = builder.ToString();
+            template = template.Replace("[TOC]", text);
+            template = template.Replace("[NAME]", volumn.Name);
+            var filePath = Path.Combine(_folder, $"Q{volumn.Index}.html");
+            File.WriteAllText(filePath, template);
         }
     }
 }

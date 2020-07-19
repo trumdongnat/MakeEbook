@@ -1,7 +1,6 @@
 ﻿using CreateEbook.Helpers;
 using CreateEbook.Models;
 using CreateEbook.Properties;
-using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Media.Imaging;
@@ -15,7 +14,7 @@ namespace CreateEbook.Services
         public void Export(Ebook ebook, string workspace)
         {
             //prepare
-            //Prepare(ebook);
+            ebook.PrepareToExport();
             //export
             var dataPath = Path.Combine(workspace, "data");
             Directory.CreateDirectory(dataPath);
@@ -26,37 +25,6 @@ namespace CreateEbook.Services
             ExportText(ebook, textPath);
             ExportToc(ebook, dataPath);
             RunCommand(workspace, dataPath, ebook);
-        }
-
-        private void Prepare(Ebook ebook)
-        {
-            if (ebook.IsAutoSplitVol && string.IsNullOrWhiteSpace(ebook.Chapters[0].VolName))
-            {
-                int count = 0;
-                string volName = null;
-                foreach (var chapter in ebook.Chapters)
-                {
-                    if(count == 0)
-                    {
-                        var start = chapter.Index;
-                        var end = chapter.Index + ebook.AutoSplitInterval;
-                        if(end < ebook.Chapters.Count - 1)
-                        {
-                            volName = $"Chương {start + 1} - {end + 1}";
-                        }
-                        else
-                        {
-                            volName = $"Chương {start + 1} - {ebook.Chapters.Count - 1 } (HẾT)";
-                        }
-                    }
-                    chapter.VolName = volName;
-                    count++;
-                    if(count == ebook.AutoSplitInterval)
-                    {
-                        count = 0;
-                    }
-                }
-            }
         }
 
         private void ExportMisc(string folder)
@@ -94,10 +62,9 @@ namespace CreateEbook.Services
 
         private void RunCommand(string workspace, string dataPath, Ebook ebook)
         {
-            
             var contentOpfPath = Path.Combine(dataPath, "content.opf");
             var command = $"/C \"\"{Settings.Default.ToolPath}\" \"{contentOpfPath}\" {CompressLevel}\"";
-            
+
             //run command
             ProcessStartInfo startInfo = new ProcessStartInfo();
             //startInfo.WindowStyle = ProcessWindowStyle.Hidden;

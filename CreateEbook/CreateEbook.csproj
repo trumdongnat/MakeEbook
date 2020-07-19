@@ -76,6 +76,7 @@
     <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="Helpers\TextHelper.cs" />
     <Compile Include="Models\Chapter.cs" />
+    <Compile Include="Models\Volumn.cs" />
     <Compile Include="Services\ExportText.cs" />
     <Compile Include="Services\ExportService.cs" />
     <Compile Include="Services\ExportToc.cs" />
@@ -157,6 +158,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\chapter.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\volumn.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\mucluc.html">
