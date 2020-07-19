@@ -8,7 +8,7 @@
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewmodels="clr-namespace:MakeEbook.ViewModels"
-    Title="MainWindow"
+    Title="Make Ebook"
     Width="800"
     Height="900"
     d:DataContext="{d:DesignInstance viewmodels:MainWindowViewModel}"

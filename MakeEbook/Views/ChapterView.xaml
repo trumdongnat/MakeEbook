@@ -31,7 +31,7 @@
             Grid.Column="1"
             FontSize="{StaticResource MediumFontSize}"
             IsReadOnly="True"
-            Text="{Binding VolName}" />
+            Text="{Binding VolumnName}" />
         <TextBox
             x:Name="ChapterText"
             Grid.Row="2"
