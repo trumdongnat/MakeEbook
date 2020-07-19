@@ -1,0 +1,65 @@
+.header {
+    font-size: 200%;
+    font-weight: bold;
+    margin: 0 0 5px;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+
+.author {
+    font-size: 100%;
+    text-align: center;
+}
+
+.chap, .part {
+    font-size: 150%;
+    font-weight: bold;
+    text-align: center;
+}
+
+.tho {
+    font-style: italic;
+    margin-top: -0.5em;
+    font-size: 85%;
+}
+
+h4 {
+    text-align: center;
+}
+
+p {
+    text-indent: 20pt;
+    line-height: 140%;
+    font-size: 100%;
+}
+
+.ebook {
+    font-style: italic;
+    font-size: 75%;
+    text-align: right;
+}
+
+.lv1 {
+    font-size: 120%;
+    font-weight: bold;
+    line-height: 90%;
+    text-indent: 20pt;
+    margin-left: 0em;
+}
+
+.lv2 {
+    line-height: 120%;
+    text-indent: 10pt;
+    font-size: 80%;
+    font-weight: bold;
+    margin-left: 2em;
+}
+
+a {
+}
+
+.drop {
+    font-size: 150%;
+    font-weight: bold;
+}
