@@ -1,19 +1,22 @@
 ﻿using CreateEbook.Helpers;
 using System.Collections.Generic;
-using System.IO;
+using System.ComponentModel;
 using System.Windows.Media.Imaging;
 
 namespace CreateEbook.Models
 {
-    public class Ebook:BindableBase
+    public class Ebook : BindableBase, IDataErrorInfo
     {
         private string _name;
+
         public string Name
         {
             get => _name;
             set => SetProperty(ref _name, value);
         }
+
         private string _author;
+
         public string Author
         {
             get => _author;
@@ -21,12 +24,13 @@ namespace CreateEbook.Models
         }
 
         private BitmapImage _cover;
+
         public BitmapImage Cover
         {
             get => _cover;
             set => SetProperty(ref _cover, value);
         }
-        
+
         public List<Chapter> Chapters { get; set; }
 
         //private bool _isAddDescription;
@@ -39,6 +43,7 @@ namespace CreateEbook.Models
         public bool HasDescription => !string.IsNullOrWhiteSpace(_description);
 
         private string _description;
+
         public string Description
         {
             get => _description;
@@ -46,6 +51,7 @@ namespace CreateEbook.Models
         }
 
         private bool _isAutoSplitVol;
+
         public bool IsAutoSplitVol
         {
             get => _isAutoSplitVol;
@@ -53,10 +59,32 @@ namespace CreateEbook.Models
         }
 
         private int _autoSplitInterval = 100;
+
         public int AutoSplitInterval
         {
             get => _autoSplitInterval;
             set => SetProperty(ref _autoSplitInterval, value);
+        }
+
+        public string Error => null;
+
+        public string this[string columnName]
+        {
+            get
+            {
+                if (columnName == nameof(Name))
+                {
+                    if (string.IsNullOrWhiteSpace(Name))
+                    {
+                        return "Không bỏ trống tên";
+                    }
+                }
+                else if (columnName == nameof(Author))
+                {
+                    return "Không bỏ trống tên tác giả";
+                }
+                return null;
+            }
         }
 
         public string Charset = "UTF-8";

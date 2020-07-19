@@ -95,9 +95,9 @@
                     <Button Command="{Binding SelectCoverCommand}">Chọn ảnh bìa</Button>
                     <Button Command="{Binding RemoveCoverCommand}">Xóa ảnh bìa</Button>
                     <Label>Tên truyện</Label>
-                    <TextBox Text="{Binding Ebook.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBox Text="{Binding Ebook.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
                     <Label>Tác giả</Label>
-                    <TextBox Text="{Binding Ebook.Author, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBox Text="{Binding Ebook.Author, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
                     <Label>Giới thiệu</Label>
                     <DockPanel>
                         <Button
