@@ -43,11 +43,12 @@ namespace MakeEbook.Services
                     {
                         continue;
                     }
-                    if(Regex.IsMatch(line, VolNamePattern))//new volumn
+                    else if (Regex.IsMatch(line, VolNamePattern))//new volumn
                     {
                         volumn = line;
+                        continue;
                     }
-                    if (Regex.IsMatch(line, ChapterNamePattern)) // new chapter
+                    else if (Regex.IsMatch(line, ChapterNamePattern)) // new chapter
                     {
                         //remove last new line
                         var text = chapterText.ToString();
@@ -56,7 +57,7 @@ namespace MakeEbook.Services
                             text = text.Substring(0, text.Length - Environment.NewLine.Length);
                         }
                         //save current chapter
-                        if(chapter == null)//description
+                        if (chapter == null)//description
                         {
                             description = text;
                         }
@@ -65,7 +66,7 @@ namespace MakeEbook.Services
                             chapter.Text = text;
                             chapters.Add(chapter);
                         }
-                        
+
                         //make new chapter
                         chapter = new Chapter() { Index = ++chapterIndex };
                         chapter.Name = line;
