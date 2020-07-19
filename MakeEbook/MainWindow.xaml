@@ -108,7 +108,8 @@
                         <TextBox
                             AcceptsReturn="True"
                             IsReadOnly="True"
-                            MaxLines="1"
+                            MaxLines="2"
+                            MinLines="2"
                             Text="{Binding Ebook.Description}" />
                     </DockPanel>
                     <CheckBox

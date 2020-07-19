@@ -4,6 +4,7 @@ using MakeEbook.Properties;
 using MakeEbook.Services;
 using Microsoft.Win32;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -172,15 +173,23 @@ namespace MakeEbook.ViewModels
                 MessageBox.Show("Không để trống tên sách", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.OK);
                 return;
             }
-            IsBusy = true;
-            var path = GetWorkspace(Ebook.Name);
-            if (File.Exists(path))
+            try
             {
-                Directory.Delete(path);
+                IsBusy = true;
+                var path = GetWorkspace(Ebook.Name);
+                if (Directory.Exists(path))
+                {
+                    Directory.Delete(path, true);
+                }
+                Directory.CreateDirectory(path);
+                await Task.Run(() => ExportService.Export(Ebook, path));
+                Process.Start(path);
+                IsBusy = false;
             }
-            Directory.CreateDirectory(path);
-            await Task.Run(() => ExportService.Export(Ebook, path));
-            IsBusy = false;
+            catch (Exception)
+            {
+                MessageBox.Show("Không thành công", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.OK);
+            }
         }
 
         private string GetWorkspace(string name)
